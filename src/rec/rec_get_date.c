@@ -1,6 +1,6 @@
 // time.h
 
-char *rec_get_date(char *str) 
+int rec_get_date(char *str) 
 {
 	time_t t = time(NULL);
 	struct tm *date = localtime(&t);
@@ -15,13 +15,14 @@ char *rec_get_date(char *str)
 		int tm_wday;         day of the week, range 0 to 6  
 		int tm_yday;         day in the year, range 0 to 365
 		int tm_isdst;        daylight saving time          
-	}; 
+	};
 */
 	if(str == NULL) 
 	{
 		fprintf(stderr, "Wskaźnik NULL w funkcji rec_get_date()\n");
-		return NULL;
+		return 1;
 	}
+
 	snprintf(str,
 		REC_DATE_SZ,
 		"%02d:%02d:%02d %02d/%02d/%04d",
@@ -32,7 +33,7 @@ char *rec_get_date(char *str)
 		date->tm_mon+1,
 		date->tm_year+1900);
 	
-	return str;
+	return 0;
 }
 
 

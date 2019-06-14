@@ -15,9 +15,9 @@ typedef struct Record
 	char type[REC_TYPE_SZ];
 } record;
 
-#include "rec_get_date.c"
-#include "rec_get_type.c"
-#include "rec_get_errstr.c"
+int rec_get_date(char *);
+int rec_get_type(int, char *);
+int rec_get_errstr(int, char *);
 
 #define REC(_format, ...) \
 { \
@@ -35,3 +35,6 @@ typedef struct Record
 	rec.date, rec.type, rec.err, __VA_ARGS__); \
 }
 
+#include "rec_get_date.c"
+#include "rec_get_type.c"
+#include "rec_get_errstr.c"

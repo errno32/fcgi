@@ -1,26 +1,18 @@
-/* Funkcja    : create_tcp_server()
- * Opis       : funkcja tworzy serwer TCP w oddzielnym wątku, którego
-		przeznaczenie określa <int service>
- * Argumenty  : int port	- numer portu dla serwera
- 		int service	- typ usługi 
- * Wynik      : 0 - sukces
- 		1 - błąd alokacji pamięci (przerwanie działania)
- */
-
-int create_tcp_server(int port, int service) 
+int open_tcp_socket(int port, int service) 
 {
-	rec info;
+	record rec;
 
 	struct tcp_attr *params = NULL;
 	params = malloc(sizeof(struct tcp_attr));
 
 	if(params == NULL) 
 	{
-		info.err = errno;
-		snprintf(info.str, REC_INFO_LEN, "Problem z alokacją pamięci"
-			" wewnątrz funkcji create_tcp_server(int port=%d,"
-			" int service=%d)", port, service);
-		record(FUCK, info.err, info.str);
+		rec.error = errno;
+		REC_ERR(FUCK, rec.error,
+			"malloc() wewnątrz open_tcp_socket()"
+			" / port=%d, service=%d",
+			port,
+			service);
 		return 1;
 	}
 
@@ -33,7 +25,7 @@ int create_tcp_server(int port, int service)
 	pthread_create(
 		&(params->thread),
 		NULL,
-		(void *) init_thread,
+		(void *) tcp_thread,
 		(void *) params);
 
 	return 0;
