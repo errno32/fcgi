@@ -7,24 +7,25 @@
 
 #include "conf.h"
 
-#include "src/rec/record.h"
+#include "src/rec/recorder.h"
+/* TODO zastąpić /record rec/ strukturą w paramsach
+ * REC_ERR(int type, int errno, const char *format, ...)
+ * REC(const char *format, ...)
+ * int rec_get_date(char *);
+ * int rec_get_type(int, char *);
+ * int rec_get_errstr(int, char *);
+ * */
 
-#include "src/tcp/tcp_attr.h"
-int open_tcp_socket	(int, int);	/* port, service */
-	int tcp_thread	(struct tcp_attr *);
-	int tcp_socket	(struct tcp_attr *);
-	int tcp_bind	(struct tcp_attr *);
-	int tcp_listen	(struct tcp_attr *);
-	int tcp_accept	(struct tcp_attr *);	/* obsługa połączeń */
-	int close_tcp_socket(struct tcp_attr *);
+#include "src/tcp/connector.h"
+/* int open_tcp_socket	(int, int);	/ port, service /
+ * int tcp_thread	(struct tcp_attr *);
+ * int tcp_socket	(struct tcp_attr *);
+ * int tcp_bind	(struct tcp_attr *);
+ * int tcp_listen	(struct tcp_attr *);
+ * int tcp_accept	(struct tcp_attr *);
+ * int close_tcp_socket(struct tcp_attr *);
+ * */
 
-#include "src/tcp/open_tcp_socket.c"
-	#include "src/tcp/init_thread.c"
-	#include "src/tcp/socket.c"
-	#include "src/tcp/bind.c"
-	#include "src/tcp/listen.c"
-	#include "src/tcp/accept.c"
-	#include "src/tcp/close_tcp_socket.c"
 
 int main(void)
 {
@@ -41,8 +42,3 @@ int main(void)
 	REC("Zakończenie pracy programu.%c", 0);
 	return 0;
 }	
-
-/* REC_ERR(WARNING, 0, "Przykładowy błąd na porcie %d", 1234); */
-
-
-

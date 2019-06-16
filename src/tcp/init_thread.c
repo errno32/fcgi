@@ -21,7 +21,7 @@ int tcp_thread(struct tcp_attr *params)
 			res_listen = tcp_listen(params);
 			if(res_listen == 0) 
 			{
-				REC("Gniazdo otwarte pomyślnie!"
+				REC("\033[32mGniazdo otwarte pomyślnie!\033[0m"
 					" / port=%d, service=%d",
 					params->port,
 					params->service);

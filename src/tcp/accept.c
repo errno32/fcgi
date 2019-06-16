@@ -93,7 +93,7 @@ int tcp_accept(struct tcp_attr *params)
 
 	} while(recived == RECV_LIMIT);
 	
-	REC("Odebrano \033[32m%d B\033[0m (rez. %d B) od 127.0.0.1"
+	REC("Odebrano \033[32m%d B\033[0m (rez. %d B)"
 		" / p=%d, s=%d",
 		buffer_len - (RECV_LIMIT - recived),
 		buffer_len,
