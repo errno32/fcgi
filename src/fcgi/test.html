@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<style type="text/css">
+	body {
+		background: #e1e1e1;
+		color: #333333;
+		font-family: Helvetica;
+		line-height: 170%;
+
+		display: flex;
+		align-items: flex-start;
+
+		margin: 0;
+	}
+
+	p {
+		text-align: justify;	
+		text-justify: inter-word;
+	}
+
+	a {
+		color: #01b6ed;
+		text-decoration: none;
+	}
+
+	a:hover {
+		color: #00bc6a;
+		text-decoration: underline;
+	}
+
+	h1  {
+		font-size: 40px;
+		color: #000000;
+		margin-bottom: 20px;
+	}
+
+	h1:focus {
+		color: red;
+	}
+
+	h2 {
+		font-size: 34px;
+		color: #000000;
+		margin-bottom: 20px;
+	}
+
+	h3 {
+		font-size: 20px;
+		color: #000000;
+	}
+
+	.aside {
+		/* position: sticky; */
+		width: 250px;
+		position: fixed;
+		overflow-y: scroll;
+		height: 100%;
+	}
+
+	.aside__top {
+		background: #fff;
+		padding: 10px;
+	}
+
+	.aside__middle {
+		background: #fff;
+		padding: 10px;
+		border-top: 1px solid #b3b3b3;
+		border-right: 1px solid #b3b3b3;
+		border-bottom: 1px solid #b3b3b3;
+		min-height: 20vh;
+		margin: 25px 0;
+	}
+
+	.aside__bottom { /* na razie nieobecne w html */
+		padding: 0 10px;
+		color: #4d4d4d;
+		font-size: 15px;
+	}
+
+	.navigation {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+
+	.main {
+		margin-left: 250px;
+	}
+
+	.content {
+		border: 1px solid #b3b3b3;
+		margin: 25px;
+		padding: 20px;
+		background: #fff;
+	}
+
+	.content__notify {
+		border: 1px solid #b3b3b3;
+		border-radius: 15px;
+		padding: 15px 20px;
+		margin: 25px;
+
+		color: #5e5e5e;
+		background: #f2f2f2;
+	}
+
+	.content__notify--top {
+		border-top: 0;
+		margin-top: 0;
+	}
+
+	.content__notify p {
+		margin: 5px 0;
+	}
+
+	.content__header {
+		border-bottom: 1px solid #dbdbdb;
+	}
+
+	.content__header p {
+		font-size: 18px;
+		color: #000000;
+	}
+
+	.content__box {
+		/* 6 elementów */
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+	}
+
+	.box__content {
+		
+	}
+
+	.box__element {
+		font-size: smaller;
+		margin: 10px 5px;
+		flex-basis: 30%;
+
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+
+		overflow: hidden;
+	}
+
+	.box__element p {
+		margin: 5px 0;
+		text-align: justify;
+		text-justify: inter-word;
+	}
+
+	.box__element img {
+		width: 100%;
+		border-radius: 5px 5px 0 0;
+
+		-webkit-transition: opacity 200ms ease-out 0ms;
+	}
+
+	.box__element img:hover {
+		opacity: 0.9;
+	}
+
+	.element__content {
+		background: #e1e1e1;
+		border-radius: 0 0 5px 5px;
+		padding: 5px 10px;
+
+		border: 1px solid #b3b3b3;
+	}
+
+
+	#jpgtest {
+		float: right;
+		margin: 9px;
+
+	}
+
+</style>
+
+
+<html lang="pl">
+	<head>
+		<title>Strona testowa</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="normalize.css">
+		<link rel="stylesheet" href="style.css">
+	</head>
+	
+	<body>
+		<aside class="aside">
+
+			<div class="aside__top">
+				<header class="aside__header">
+					Menu
+				</header>
+
+				<nav class="nav">
+					<ul class="navigation">
+						<li><a href="#">link 1.</a></li>
+						<li><a href="#">link 2.</a></li>
+						<li><a href="#">link 3.</a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+
+
+		<main class="main">
+
+			<section class="content__notify content__notify--top">
+				<p>element klasy "content__notify--top"</p>
+			</section>
+
+			<section class="content">
+				<header class="content__header">
+					<h1>Strona testowa<h1>
+					<p>Wygląda na to, że wszystko OK.</p>
+				</header>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor <a href="#">tutaj link sobie wstawiam dla sprawdzenia</a> incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin convallis nibh eget nibh tincidunt, vel lacinia lacus scelerisque. Nulla eget arcu consectetur, porttitor risus sed, tristique massa. Praesent quis neque ultricies, fermentum ante vitae, condimentum justo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin convallis nibh eget nibh tincidunt, vel lacinia lacus scelerisque. Nulla eget arcu consectetur, porttitor risus sed, tristique massa. Praesent quis neque ultricies, fermentum ante vitae, condimentum justo.</p>
+
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			</section>
+
+			<section class="content__notify">
+				<p>"notify__content"</p>
+				<p>to jest drugi paragaf</p>
+				<p>a to trzeci Nulla eget arcu consectetur, porttitor risus sed, tristique massa. lNulla eget arcu consectetur, porttitor risus sed, tristique massa.</p>
+			</section>
+
+		</main>
+	</body>
+</html>

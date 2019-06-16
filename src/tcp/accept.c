@@ -22,6 +22,7 @@ int tcp_accept(struct tcp_attr *params)
 	struct sockaddr_in sender;
 	socklen_t sender_len = sizeof(struct sockaddr);
 
+	/* punkt blokowania funkcji */
 	nfd = accept(params->sfd, (struct sockaddr *) &sender, &sender_len);
 
 	if(nfd == -1) 
@@ -34,19 +35,17 @@ int tcp_accept(struct tcp_attr *params)
 		return 1;
 	}
 
-	/*
-	printf("-- nfd, %s:%d\n",
-		inet_ntoa(sender.sin_addr),
-		ntohs(sender.sin_port));
-	*/
-
+	/* zabezpieczenie przed niepowołanym dostępem */
 	if(memcmp(&localhost, &(sender.sin_addr), sizeof(struct in_addr))) 
 	{
-		/* zewnętrzny adres IP */
-		REC_ERR(WARNING, 0, "Próba połączenia z zewnętrznym serwerem"
-			" / p=%d, s=%d", params->port, params->service);
+		REC_ERR(WARNING, 0, "Próba połączenia z %s:%d / p=%d, s=%d",
+			inet_ntoa(sender.sin_addr),
+			ntohs(sender.sin_port),
+			params->port,
+			params->service);
 		close(nfd);
 		return 0;
+		/* TODO zwiększenie puli akceptowalnych adresów */
 	}
 
 	REC("Port %d / Nowe połączenie (nfd=%d)", params->port, nfd);
@@ -100,7 +99,8 @@ int tcp_accept(struct tcp_attr *params)
 		params->port,
 		params->service);
 
-	//fcgi_parse(buffer, buffer_len - (RECV_LIMIT - recived));
+	/* przesył danych */
+	fcgi_parse(buffer, buffer_len - (RECV_LIMIT - recived));
 
 
 	//fcgi_send_test_page(nfd);

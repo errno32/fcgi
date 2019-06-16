@@ -27,6 +27,13 @@
  * */
 
 
+#include "src/fcgi/parse.c"
+
+#include "src/fcgi/asemble_body.c"
+#include "src/fcgi/get_len.c"
+/* fcgi_parse() */
+
+
 int main(void)
 {
 	record rec; /* niezbędne dla funkcji REC() i REC_ERR() */
