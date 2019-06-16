@@ -1,9 +1,5 @@
 #include <sys/socket.h>	/* accept() */
 
-#define RECV_LIMIT 4096	/* $ getconf PAGE_SIZE */
-			/* sysconf(_SC_PAGESIZE) */
-			/* byle nie większe niż limit recv() */
-
 /* Funkcja    : tcp_accept()
  * Opis       : obsługuje nadchodzące połączenia
  * Argumenty  : *params - wskaźnik na strukturę zawierającą wszystkie dane
@@ -55,7 +51,7 @@ int tcp_accept(struct tcp_attr *params)
 
 	do {
 		buffer_before = buffer;
-		buffer_len += RECV_LIMIT;
+		buffer_len += P_SIZE;
 		buffer = realloc(buffer, buffer_len);
 
 		if(buffer == NULL) 
@@ -72,8 +68,8 @@ int tcp_accept(struct tcp_attr *params)
 			return 2;
 		}
 
-		recived = recv(nfd, &buffer[buffer_len - RECV_LIMIT],
-			RECV_LIMIT, 0);
+		recived = recv(nfd, &buffer[buffer_len - P_SIZE],
+			P_SIZE, 0);
 
 		/*
 		REC("Odebrano %d B, zaalokowano łącznie %d B danych"
@@ -90,23 +86,22 @@ int tcp_accept(struct tcp_attr *params)
 		if(recived == 0) return 3;
 		/* przerwanie połączenia */
 
-	} while(recived == RECV_LIMIT);
+	} while(recived == P_SIZE);
 	
 	REC("Odebrano \033[32m%d B\033[0m (rez. %d B)"
 		" / p=%d, s=%d",
-		buffer_len - (RECV_LIMIT - recived),
+		buffer_len - (P_SIZE - recived),
 		buffer_len,
 		params->port,
 		params->service);
 
 	/* przesył danych */
-	fcgi_parse(buffer, buffer_len - (RECV_LIMIT - recived));
+	fcgi_parse(buffer, buffer_len - (P_SIZE - recived));
 
 
 	//fcgi_send_test_page(nfd);
 	
 	/* params->loop = 0;  -- przerwanie pętli w init_thread() */
-
 	 
 	printf("\tWychodzę z tcp_accept()...\n");
 	close(nfd);

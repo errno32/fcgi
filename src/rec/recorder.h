@@ -1,3 +1,10 @@
+/*
+int rec_get_date(char *);
+int rec_get_type(int, char *);
+int rec_get_errstr(int, char *);
+oraz REC() i REC_ERR()
+*/
+
 #define OK	0
 #define WARNING	1
 #define ERROR	2
@@ -15,10 +22,6 @@ typedef struct Record
 	char type[REC_TYPE_SZ];
 } record;
 
-int rec_get_date(char *);
-int rec_get_type(int, char *);
-int rec_get_errstr(int, char *);
-
 #define REC(_format, ...) \
 { \
 	rec_get_date(rec.date); \
@@ -34,7 +37,3 @@ int rec_get_errstr(int, char *);
 	fprintf(stderr, "%s %s / %s / " _format "\n", \
 	rec.date, rec.type, rec.err, __VA_ARGS__); \
 }
-
-#include "rec_get_date.c"
-#include "rec_get_type.c"
-#include "rec_get_errstr.c"

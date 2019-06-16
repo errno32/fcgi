@@ -6,33 +6,46 @@
 #include <pthread.h>
 
 #include "conf.h"
+/* P_SIZE -- link :3 */
 
 #include "src/rec/recorder.h"
-/* TODO zastąpić /record rec/ strukturą w paramsach
- * REC_ERR(int type, int errno, const char *format, ...)
- * REC(const char *format, ...)
- * int rec_get_date(char *);
- * int rec_get_type(int, char *);
- * int rec_get_errstr(int, char *);
- * */
-
 #include "src/tcp/connector.h"
-/* int open_tcp_socket	(int, int);	/ port, service /
- * int tcp_thread	(struct tcp_attr *);
- * int tcp_socket	(struct tcp_attr *);
- * int tcp_bind	(struct tcp_attr *);
- * int tcp_listen	(struct tcp_attr *);
- * int tcp_accept	(struct tcp_attr *);
- * int close_tcp_socket(struct tcp_attr *);
- * */
+#include "src/fcgi/parser.h"
 
+/******************************************************/
+int rec_get_date(char *);
+int rec_get_type(int, char *);
+int rec_get_errstr(int, char *);
+/* oraz REC() i REC_ERR() */
+
+int open_tcp_socket	(int, int);	/* port, service */
+int tcp_thread	(struct tcp_attr *);
+int tcp_socket	(struct tcp_attr *);
+int tcp_bind	(struct tcp_attr *);
+int tcp_listen	(struct tcp_attr *);
+int tcp_accept	(struct tcp_attr *);
+int close_tcp_socket(struct tcp_attr *);
+
+int fcgi_parse(char *, int);
+int fcgi_asemble_body(struct fcgi_body *, int, char *);
+int fcgi_get_len(char *, int *, int*);	/* buffer, length, position */
+
+#include "src/rec/rec_get_date.c"
+#include "src/rec/rec_get_type.c"
+#include "src/rec/rec_get_errstr.c"
+
+#include "src/tcp/open_tcp_socket.c"
+#include "src/tcp/init_thread.c"
+#include "src/tcp/socket.c"
+#include "src/tcp/bind.c"
+#include "src/tcp/listen.c"
+#include "src/tcp/accept.c"
+#include "src/tcp/close_tcp_socket.c"
 
 #include "src/fcgi/parse.c"
-
 #include "src/fcgi/asemble_body.c"
 #include "src/fcgi/get_len.c"
-/* fcgi_parse() */
-
+/******************************************************/
 
 int main(void)
 {

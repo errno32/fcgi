@@ -4,8 +4,6 @@
 #include <errno.h>	/* EADDRINUSE */
 #include <unistd.h>	/* sleep() */
 
-#define BIND_SLEEPER 30
-
 /* Funkcja    : init_bind()
  * Opis       : otwiera port dla gniazda; jeśli port jest zajęty, ponawia
  		operację co BIND_SLEEPER sekund aż do skutku
