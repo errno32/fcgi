@@ -61,9 +61,11 @@ int tcp_bind(struct tcp_attr *params)
 
 	} while(result != 0);
 
+	/*
 	REC("bind() wykonany pomyślnie / port=%d, service=%d",
 		params->port,
 		params->service);
+	*/
 	
 	return 0;
 }

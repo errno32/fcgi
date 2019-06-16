@@ -19,11 +19,11 @@ int open_tcp_socket	(int, int);	/* port, service */
 	int close_tcp_socket(struct tcp_attr *);
 
 #include "src/tcp/open_tcp_socket.c"
-	#include "src/tcp/tcp_thread.c"
-	#include "src/tcp/tcp_socket.c"
-	#include "src/tcp/tcp_bind.c"
-	#include "src/tcp/tcp_listen.c"
-	#include "src/tcp/tcp_accept.c"
+	#include "src/tcp/init_thread.c"
+	#include "src/tcp/socket.c"
+	#include "src/tcp/bind.c"
+	#include "src/tcp/listen.c"
+	#include "src/tcp/accept.c"
 	#include "src/tcp/close_tcp_socket.c"
 
 int main(void)
@@ -34,8 +34,9 @@ int main(void)
 	open_tcp_socket(12345, 1);
 
 
-	/* przytrzymywadełko */
-	int znak = fgetc(stdin);
+	/* przytrzymywadełko / inkrementacja, bo kompilator */
+	int znak = fgetc(stdin); znak++;
+	
 
 	REC("Zakończenie pracy programu.%c", 0);
 	return 0;

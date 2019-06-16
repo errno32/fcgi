@@ -6,6 +6,11 @@
  * Argumenty  : *params - wskaźnik na strukturę zawierającą wszystkie dane
  * Wynik      : 0 - success
  		1 - błąd funkcji socket()
+
+ * Func       :
+ * Desc       :
+ * Args       :
+ * Return     :
  	
  */
 
@@ -34,9 +39,11 @@ int tcp_socket(struct tcp_attr *params)
 		return 1;
 	}
 
+	/*
 	REC("socket() wykonany pomyślnie / port=%d, service=%d",
 		params->port,
 		params->service);
+	*/
 
 	return 0;
 }

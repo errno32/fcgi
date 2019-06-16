@@ -28,9 +28,11 @@ int tcp_listen(struct tcp_attr *params)
 		return 1;
 	}
 
+	/*
 	REC("listen() wykonany pomyślnie / port=%d, service=%d",
 		params->port,
 		params->service);
+	*/
 
 	return 0;
 }

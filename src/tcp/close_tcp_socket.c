@@ -7,7 +7,7 @@
 
 int close_tcp_socket(struct tcp_attr *params) 
 {
-	record rec;
+	record rec; 
 
 	if(params == NULL) 
 	{
@@ -32,7 +32,7 @@ int close_tcp_socket(struct tcp_attr *params)
 	params = NULL;
 
 	REC("Zamknięto gniazdo TCP / port=%d, service=%d",
-		params->port, params->service);
+		info_port, info_service);
 	
 	return 0;
 }

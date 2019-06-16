@@ -16,18 +16,13 @@ int tcp_accept(struct tcp_attr *params)
 	record rec;
 	int nfd = 0;
 
-	/* TODO: odrzucanie zdalnych połączeń
-	struct sockaddr_in test;
-	socklen_t test_len = sizeof(struct sockaddr);
-	nfd = accept(params->sfd, (struct sockaddr *) &test, &test_len);
+	struct in_addr localhost;
+	inet_aton("127.0.0.1", &localhost);
 
-	printf("nfd, addr=%s port=%d\n",
-		inet_ntoa(test.sin_addr),
-		ntohs(test.sin_port));
-	*/
+	struct sockaddr_in sender;
+	socklen_t sender_len = sizeof(struct sockaddr);
 
-
-	nfd = accept(params->sfd, NULL, NULL);
+	nfd = accept(params->sfd, (struct sockaddr *) &sender, &sender_len);
 
 	if(nfd == -1) 
 	{
@@ -38,6 +33,23 @@ int tcp_accept(struct tcp_attr *params)
 			params->service);
 		return 1;
 	}
+
+	/*
+	printf("-- nfd, %s:%d\n",
+		inet_ntoa(sender.sin_addr),
+		ntohs(sender.sin_port));
+	*/
+
+	if(memcmp(&localhost, &(sender.sin_addr), sizeof(struct in_addr))) 
+	{
+		/* zewnętrzny adres IP */
+		REC_ERR(WARNING, 0, "Próba połączenia z zewnętrznym serwerem"
+			" / p=%d, s=%d", params->port, params->service);
+		close(nfd);
+		return 0;
+	}
+
+	REC("Port %d / Nowe połączenie (nfd=%d)", params->port, nfd);
 
 	char *buffer = NULL, *buffer_before;	/* TODO free() */
 	int recived = 0, buffer_len = 0;
@@ -64,12 +76,14 @@ int tcp_accept(struct tcp_attr *params)
 		recived = recv(nfd, &buffer[buffer_len - RECV_LIMIT],
 			RECV_LIMIT, 0);
 
+		/*
 		REC("Odebrano %d B, zaalokowano łącznie %d B danych"
 			" / port=%d, service=%d",
 			recived,
 			buffer_len,
 			params->port,
 			params->service);
+		*/
 
 		/* TODO sprawdzenie ostatniego rekordu na wypadek
 		   dokładnego wypełnienia bloków */
@@ -78,13 +92,23 @@ int tcp_accept(struct tcp_attr *params)
 		/* przerwanie połączenia */
 
 	} while(recived == RECV_LIMIT);
+	
+	REC("Odebrano \033[32m%d B\033[0m (rez. %d B) od 127.0.0.1"
+		" / p=%d, s=%d",
+		buffer_len - (RECV_LIMIT - recived),
+		buffer_len,
+		params->port,
+		params->service);
 
 	//fcgi_parse(buffer, buffer_len - (RECV_LIMIT - recived));
 
 
 	//fcgi_send_test_page(nfd);
-	close(nfd); /* TODO dowiedzieć się czy można fflush()ować gniazda */
 	
 	/* params->loop = 0;  -- przerwanie pętli w init_thread() */
+
+	 
+	printf("\tWychodzę z tcp_accept()...\n");
+	close(nfd);
 	return 0;
 }
