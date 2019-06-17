@@ -23,6 +23,7 @@ int tcp_accept(struct tcp_attr *params)
 	/* punkt blokowania funkcji */
 	nfd = accept(params->sfd, (struct sockaddr *) &sender, &sender_len);
 
+	/* obsługa błędów */
 	if(nfd == -1) 
 	{
 		rec.error = errno;
@@ -49,9 +50,7 @@ int tcp_accept(struct tcp_attr *params)
 	REC("Port %d / Nowe połączenie (nfd=%d)", params->port, nfd);
 
 	tcp_recive_all(params, rs, nfd);
-
 	fcgi_parse(rs->buffer, rs->buffer_data_len);
-
 
 	//fcgi_send_test_page(nfd);
 	

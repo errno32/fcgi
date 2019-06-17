@@ -1,0 +1,16 @@
+#include "src/rec/rec_get_date.c"
+#include "src/rec/rec_get_type.c"
+#include "src/rec/rec_get_errstr.c"
+
+#include "src/tcp/open_tcp_socket.c"
+#include "src/tcp/init_thread.c"
+#include "src/tcp/socket.c"
+#include "src/tcp/bind.c"
+#include "src/tcp/listen.c"
+#include "src/tcp/accept.c"
+#include "src/tcp/recive_all.c"
+#include "src/tcp/close_tcp_socket.c"
+
+#include "src/fcgi/parse.c"
+#include "src/fcgi/asemble_body.c"
+#include "src/fcgi/get_len.c"

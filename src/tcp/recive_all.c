@@ -25,7 +25,7 @@ int tcp_recive_all(struct tcp_attr *params, struct tcp_recived *rs, int nfd)
 			if(buffer_before != NULL) free(buffer_before);
 
 			close(nfd);
-			return 2;
+			return 1;
 		}
 
 		recived = recv(nfd, &(rs->buffer)[rs->buffer_len - P_SIZE],
@@ -49,7 +49,7 @@ int tcp_recive_all(struct tcp_attr *params, struct tcp_recived *rs, int nfd)
 				" serwer / port=%d, service=%d",
 				params->port,
 				params->service);
-			 return 3; 
+			 return 2; 
 		}
 
 	} while(recived == P_SIZE);
@@ -62,5 +62,18 @@ int tcp_recive_all(struct tcp_attr *params, struct tcp_recived *rs, int nfd)
 		rs->buffer_len,
 		params->port,
 		params->service);
+
+	/* zapisanie danych od NGINX */
+	FILE *rfd = fopen("_odp.bin", "wb+");
+	if(rfd == NULL)
+	{
+		perror("Blad as75df87");
+		return -1;
+	}
+
+	printf("\tZapisuję bufor do pliku...\n");
+	fwrite(rs->buffer, rs->buffer_data_len, 1, rfd);
+	fclose(rfd);
+
 	return 0;
 }
