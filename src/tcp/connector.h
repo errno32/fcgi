@@ -19,3 +19,10 @@ struct tcp_attr
 
 	int loop;
 };
+
+struct tcp_recived 
+{
+	char *buffer;
+	int buffer_len;
+	int buffer_data_len;
+};

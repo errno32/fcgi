@@ -4,6 +4,9 @@ int fcgi_asemble_body(struct fcgi_body *, int, char *);
 int fcgi_get_len(char *, int *, int*);	/buffer, length, position/
 */
 
+#define FCGI_HEADER_LEN	8
+#define FCGI_VERSION	1
+
 #define FCGI_BEGIN_REQUEST       1
 #define FCGI_ABORT_REQUEST       2
 #define FCGI_END_REQUEST         3

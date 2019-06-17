@@ -13,9 +13,9 @@
 #include "src/fcgi/parser.h"
 
 /******************************************************/
-int rec_get_date(char *);
-int rec_get_type(int, char *);
-int rec_get_errstr(int, char *);
+int rec_get_date	(char *);
+int rec_get_type	(int, char *);
+int rec_get_errstr	(int, char *);
 /* oraz REC() i REC_ERR() */
 
 int open_tcp_socket	(int, int);	/* port, service */
@@ -23,7 +23,8 @@ int tcp_thread		(struct tcp_attr *);
 int tcp_socket		(struct tcp_attr *);
 int tcp_bind		(struct tcp_attr *);
 int tcp_listen		(struct tcp_attr *);
-int tcp_accept		(struct tcp_attr *); /* reciving data */
+int tcp_accept		(struct tcp_attr *);
+int tcp_recive_all	(struct tcp_attr *, struct tcp_recived*, int);
 int close_tcp_socket	(struct tcp_attr *);
 
 int fcgi_parse		(char *, int);	/* buffer, len */
@@ -40,6 +41,7 @@ int fcgi_get_len	(char *, int *, int*);	/* buffer, length, position */
 #include "src/tcp/bind.c"
 #include "src/tcp/listen.c"
 #include "src/tcp/accept.c"
+#include "src/tcp/recive_all.c"
 #include "src/tcp/close_tcp_socket.c"
 
 #include "src/fcgi/parse.c"

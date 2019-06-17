@@ -18,6 +18,8 @@ int tcp_accept(struct tcp_attr *params)
 	struct sockaddr_in sender;
 	socklen_t sender_len = sizeof(struct sockaddr);
 
+	struct tcp_recived *rs = malloc(sizeof(struct tcp_recived));
+
 	/* punkt blokowania funkcji */
 	nfd = accept(params->sfd, (struct sockaddr *) &sender, &sender_len);
 
@@ -46,63 +48,9 @@ int tcp_accept(struct tcp_attr *params)
 
 	REC("Port %d / Nowe połączenie (nfd=%d)", params->port, nfd);
 
-	char *buffer = NULL, *buffer_before;	/* TODO free() */
-	int recived = 0, buffer_len = 0;
+	tcp_recive_all(params, rs, nfd);
 
-	do {
-		buffer_before = buffer;
-		buffer_len += P_SIZE;
-		buffer = realloc(buffer, buffer_len);
-
-		if(buffer == NULL) 
-		{
-			rec.error = errno;
-			REC_ERR(ERROR, rec.error, "realloc() wewnątrz"
-				" tcp_accept() / port=%d, service=%d",
-				params->port,
-				params->service);
-
-			if(buffer_before != NULL) free(buffer_before);
-
-			close(nfd);
-			return 2;
-		}
-
-		recived = recv(nfd, &buffer[buffer_len - P_SIZE],
-			P_SIZE, 0);
-
-		/*
-		REC("Odebrano %d B, zaalokowano łącznie %d B danych"
-			" / port=%d, service=%d",
-			recived,
-			buffer_len,
-			params->port,
-			params->service);
-		*/
-
-		/* TODO sprawdzenie ostatniego rekordu na wypadek
-		   dokładnego wypełnienia bloków */
-
-		if(recived == 0)
-		{
-			REC_ERR(ERROR, rec.error, "Połączenie przerwane przez"
-				" serwer / port=%d, service=%d",
-				params->port,
-				params->service);
-			 return 3; 
-		}
-
-	} while(recived == P_SIZE);
-	
-	REC("Odebrano \033[32m%d B\033[0m (rez. %d B)"
-		" / p=%d, s=%d",
-		buffer_len - (P_SIZE - recived),
-		buffer_len,
-		params->port,
-		params->service);
-
-	/* przesył danych */
-	fcgi_parse(buffer, buffer_len - (P_SIZE - recived));
+	fcgi_parse(rs->buffer, rs->buffer_data_len);
 
 
 	//fcgi_send_test_page(nfd);
