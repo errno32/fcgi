@@ -83,8 +83,14 @@ int tcp_accept(struct tcp_attr *params)
 		/* TODO sprawdzenie ostatniego rekordu na wypadek
 		   dokładnego wypełnienia bloków */
 
-		if(recived == 0) return 3;
-		/* przerwanie połączenia */
+		if(recived == 0)
+		{
+			REC_ERR(ERROR, rec.error, "Połączenie przerwane przez"
+				" serwer / port=%d, service=%d",
+				params->port,
+				params->service);
+			 return 3; 
+		}
 
 	} while(recived == P_SIZE);
 	

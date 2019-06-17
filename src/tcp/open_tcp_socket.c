@@ -25,7 +25,7 @@ int open_tcp_socket(int port, int service)
 	pthread_create(
 		&(params->thread),
 		NULL,
-		(void *) tcp_thread,
+		(void *) tcp_thread, /* tcp_thread(params) */
 		(void *) params);
 
 	return 0;

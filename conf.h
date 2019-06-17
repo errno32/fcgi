@@ -2,6 +2,5 @@
 
 #define BIND_SLEEPER 30
 
-
 #define FCGI_HEADER_LEN	8
 #define FCGI_VERSION	1

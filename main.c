@@ -19,16 +19,16 @@ int rec_get_errstr(int, char *);
 /* oraz REC() i REC_ERR() */
 
 int open_tcp_socket	(int, int);	/* port, service */
-int tcp_thread	(struct tcp_attr *);
-int tcp_socket	(struct tcp_attr *);
-int tcp_bind	(struct tcp_attr *);
-int tcp_listen	(struct tcp_attr *);
-int tcp_accept	(struct tcp_attr *);
-int close_tcp_socket(struct tcp_attr *);
+int tcp_thread		(struct tcp_attr *);
+int tcp_socket		(struct tcp_attr *);
+int tcp_bind		(struct tcp_attr *);
+int tcp_listen		(struct tcp_attr *);
+int tcp_accept		(struct tcp_attr *); /* reciving data */
+int close_tcp_socket	(struct tcp_attr *);
 
-int fcgi_parse(char *, int);
-int fcgi_asemble_body(struct fcgi_body *, int, char *);
-int fcgi_get_len(char *, int *, int*);	/* buffer, length, position */
+int fcgi_parse		(char *, int);	/* buffer, len */
+int fcgi_asemble_body	(struct fcgi_body *, int, char *);
+int fcgi_get_len	(char *, int *, int*);	/* buffer, length, position */
 
 #include "src/rec/rec_get_date.c"
 #include "src/rec/rec_get_type.c"
@@ -54,11 +54,8 @@ int main(void)
 
 	open_tcp_socket(12345, 1);
 
-
 	/* przytrzymywadełko / inkrementacja, bo kompilator */
 	int znak = fgetc(stdin); znak++;
-	
-
 	REC("Zakończenie pracy programu.%c", 0);
 	return 0;
-}	
+}
