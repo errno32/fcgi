@@ -5,56 +5,114 @@ int tcp_recive_all(struct tcp_attr *params, struct tcp_recived *rs, int nfd)
 	rs->buffer = NULL;
 	rs->buffer_len = 0;
 	rs->buffer_data_len = 0;
-
 	char *buffer_before;
-	int recived = 0;
 
+	int recived = 0;	/* tyle odebrano przy ostatnim recv() */
+
+	int allocating = 1;	/* czy alokować dodatkową pamięć? */
+	int repeating = 1;	/* czy wykonywać dalej pętlę? */
+	int waited = 0;		/* czy wykonało już jedno spanko? */ 
 	do {
-		buffer_before = rs->buffer;
-		rs->buffer_len += P_SIZE;
-		rs->buffer = realloc(rs->buffer, rs->buffer_len);
-
-		if(rs->buffer == NULL) 
+		if(allocating) 
 		{
-			rec.error = errno;
-			REC_ERR(ERROR, rec.error, "realloc() wewnątrz"
-				" tcp_accept() / port=%d, service=%d",
-				params->port,
-				params->service);
+			buffer_before = rs->buffer;
+			rs->buffer_len += P_SIZE;
+			rs->buffer = realloc(rs->buffer, rs->buffer_len);
 
-			if(buffer_before != NULL) free(buffer_before);
+			if(rs->buffer == NULL) 
+			{
+				rec.error = errno;
+				REC_ERR(ERROR, rec.error, "realloc() wewnątrz"
+					" tc_z_ufer() / port=%d, service=%d",
+					params->port,
+					params->service);
 
-			close(nfd);
-			return 1;
+				if(buffer_before != NULL) free(buffer_before);
+
+				return 1;
+			}
 		}
 
 		recived = recv(nfd, &(rs->buffer)[rs->buffer_len - P_SIZE],
-			P_SIZE, 0);
+			P_SIZE, MSG_DONTWAIT);
 
-		/*
-		REC("Odebrano %d B, zaalokowano już łącznie %d B danych"
-			" / port=%d, service=%d",
-			recived,
-			buffer_len,
-			params->port,
-			params->service);
-		*/
+		if(recived == P_SIZE) 
+		{
+			/* dopełniono bufer -- kontynuacja pobierania */
 
-		/* TODO sprawdzenie ostatniego rekordu na wypadek
-		   dokładnego wypełnienia bloków */
+			allocating	= 1;
+			repeating	= 1; 
+			waited		= 0;
 
-		if(recived == 0)
+		//	rs->buffer_data_len = rs->buffer_len - P_SIZE + recived;
+			rs->buffer_data_len += recived;
+		}
+		else if(recived == 0)
 		{
 			REC_ERR(ERROR, rec.error, "Połączenie przerwane przez"
 				" serwer / port=%d, service=%d",
 				params->port,
 				params->service);
-			 return 2; 
+
+			if(rs->buffer != NULL) 
+			{
+				free(rs->buffer);
+				rs->buffer = NULL;
+			}
+
+			return 2; 
+		}
+		else if(recived == -1) 
+		{
+			rec.error = errno;
+			if((rec.error == EAGAIN) || (rec.error == EWOULDBLOCK))
+			{
+				if(waited)  
+				{
+					allocating	= 0;
+					repeating	= 0; 
+					waited		= 1;
+
+					recived = 0;
+				}
+				else 
+				{
+					printf("spanko\n");
+					usleep(1000);
+
+					allocating	= 0;
+					repeating	= 1; 
+					waited		= 1;
+
+					recived = 0;
+				}
+			}
+			else
+			{
+				/* niespodziewnay błąd */
+				REC_ERR(ERROR, rec.error, "recv()"
+					" / port=%d, service=%d",
+					params->port,
+					params->service);
+
+				if(rs->buffer != NULL) 
+				{
+					free(rs->buffer);
+					rs->buffer = NULL;
+				}
+
+				return 3;
+			}
+		}
+		else 
+		{
+			/* pobrano dane bez przeszkód -- koniec pętli */
+			rs->buffer_data_len = rs->buffer_len - P_SIZE + recived;
+			repeating = 0;
 		}
 
-	} while(recived == P_SIZE);
+	} while(repeating);
 
-	rs->buffer_data_len = rs->buffer_len - P_SIZE + recived;
 
 	REC("Odebrano \033[32m%d B\033[0m (rez. %d B)"
 		" / p=%d, s=%d",
@@ -63,7 +121,7 @@ int tcp_recive_all(struct tcp_attr *params, struct tcp_recived *rs, int nfd)
 		params->port,
 		params->service);
 
-	/* zapisanie danych od NGINX */
+	/* zapisanie sekwencji FCGI do pliku */
 	FILE *rfd = fopen("_odp.bin", "wb+");
 	if(rfd == NULL)
 	{

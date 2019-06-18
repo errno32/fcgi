@@ -56,7 +56,6 @@ int tcp_accept(struct tcp_attr *params)
 	
 	/* params->loop = 0;  -- przerwanie pętli w init_thread() */
 	 
-	printf("\tWychodzę z tcp_accept()...\n");
 	close(nfd);
 	return 0;
 }

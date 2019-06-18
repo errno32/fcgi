@@ -12,7 +12,6 @@
 #include "src/tcp/connector.h"
 #include "src/fcgi/parser.h"
 
-/* * * PROTOTYPY * * */
 int rec_get_date	(char *);
 int rec_get_type	(int, char *);
 int rec_get_errstr	(int, char *);
@@ -24,7 +23,8 @@ int tcp_socket		(struct tcp_attr *);
 int tcp_bind		(struct tcp_attr *);
 int tcp_listen		(struct tcp_attr *);
 int tcp_accept		(struct tcp_attr *);
-int tcp_recive_all	(struct tcp_attr *, struct tcp_recived*, int);
+	int tcp_recive_all	(struct tcp_attr *, struct tcp_recived *, int);
+	int tcp_resize_buffer	(struct tcp_attr *, struct tcp_recived *);
 int close_tcp_socket	(struct tcp_attr *);
 
 int fcgi_parse		(char *, int);	/* buffer, len */

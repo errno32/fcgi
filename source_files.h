@@ -9,6 +9,7 @@
 #include "src/tcp/listen.c"
 #include "src/tcp/accept.c"
 #include "src/tcp/recive_all.c"
+#include "src/tcp/resize_buffer.c"
 #include "src/tcp/close_tcp_socket.c"
 
 #include "src/fcgi/parse.c"

@@ -35,5 +35,3 @@ int rec_get_date(char *str)
 	
 	return 0;
 }
-
-
