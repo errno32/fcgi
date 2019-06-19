@@ -2,16 +2,14 @@ int tcp_recive_all(struct tcp_attr *params, struct tcp_recived *rs, int nfd)
 {
 	record rec;
 
-	rs->buffer = NULL;
-	rs->buffer_len = 0;
-	rs->buffer_data_len = 0;
-	char *buffer_before;
-
 	int recived = 0;	/* tyle odebrano przy ostatnim recv() */
 
 	int allocating = 1;	/* czy alokować dodatkową pamięć? */
 	int repeating = 1;	/* czy wykonywać dalej pętlę? */
 	int waited = 0;		/* czy wykonało już jedno spanko? */ 
+
+	char *buffer_before;
+
 	do {
 		if(allocating) 
 		{
@@ -44,7 +42,6 @@ int tcp_recive_all(struct tcp_attr *params, struct tcp_recived *rs, int nfd)
 			repeating	= 1; 
 			waited		= 0;
 
-		//	rs->buffer_data_len = rs->buffer_len - P_SIZE + recived;
 			rs->buffer_data_len += recived;
 		}
 		else if(recived == 0)
@@ -77,8 +74,14 @@ int tcp_recive_all(struct tcp_attr *params, struct tcp_recived *rs, int nfd)
 				}
 				else 
 				{
-					printf("spanko\n");
-					usleep(1000);
+					REC_ERR(WARNING, rec.error,
+					"Ponawiam odbiór za %d mikrosekund"
+					" / port=%d, service=%d",
+					NONBLOCK_WAITER,
+					params->port,
+					params->service);
+
+					usleep(NONBLOCK_WAITER);
 
 					allocating	= 0;
 					repeating	= 1; 
@@ -128,7 +131,6 @@ int tcp_recive_all(struct tcp_attr *params, struct tcp_recived *rs, int nfd)
 		perror("Blad as75df87");
 		return -1;
 	}
-
 	printf("\tZapisuję bufor do pliku...\n");
 	fwrite(rs->buffer, rs->buffer_data_len, 1, rfd);
 	fclose(rfd);

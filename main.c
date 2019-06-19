@@ -6,7 +6,6 @@
 #include <pthread.h>
 
 #include "conf.h"
-/* P_SIZE -- link :3 */
 
 #include "src/rec/recorder.h"
 #include "src/tcp/connector.h"
@@ -23,8 +22,7 @@ int tcp_socket		(struct tcp_attr *);
 int tcp_bind		(struct tcp_attr *);
 int tcp_listen		(struct tcp_attr *);
 int tcp_accept		(struct tcp_attr *);
-	int tcp_recive_all	(struct tcp_attr *, struct tcp_recived *, int);
-	int tcp_resize_buffer	(struct tcp_attr *, struct tcp_recived *);
+int tcp_recive_all	(struct tcp_attr *, struct tcp_recived *, int);
 int close_tcp_socket	(struct tcp_attr *);
 
 int fcgi_parse		(char *, int);	/* buffer, len */

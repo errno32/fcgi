@@ -19,6 +19,21 @@ int tcp_accept(struct tcp_attr *params)
 	socklen_t sender_len = sizeof(struct sockaddr);
 
 	struct tcp_recived *rs = malloc(sizeof(struct tcp_recived));
+	if(rs != NULL)  
+	{
+		rs->buffer = NULL;
+		rs->buffer_len = 0;
+		rs->buffer_data_len = 0;
+	}
+	else 
+	{
+		rec.error = errno;
+		REC_ERR(ERROR, rec.error, "malloc() wewnątrz tcp_accept()"
+			" / port=%d, service=%d",
+			params->port,
+			params->service);
+		return 1;
+	}
 
 	/* punkt blokowania funkcji */
 	nfd = accept(params->sfd, (struct sockaddr *) &sender, &sender_len);
@@ -31,7 +46,7 @@ int tcp_accept(struct tcp_attr *params)
 			" / port=%d, service=%d",
 			params->port,
 			params->service);
-		return 1;
+		return 2;
 	}
 
 	/* zabezpieczenie przed niepowołanym dostępem */
