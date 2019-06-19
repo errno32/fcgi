@@ -5,12 +5,12 @@ int tcp_socket	(struct tcp_attr *);
 int tcp_bind	(struct tcp_attr *);
 int tcp_listen	(struct tcp_attr *);
 int tcp_accept	(struct tcp_attr *);
-	TODO
-	int tcp_resize_buffer	(struct tcp_recived *);
+int tcp_recive_all	(struct tcp_attr*, struct tcp_recived*, int)
 int close_tcp_socket(struct tcp_attr *);
 */
 
 /* BIND_SLEEPER zadeklarowany w pliku conf.h */
+/* NONBLOCK_WAITER zadeklarowany w pliku conf.h */
 
 struct tcp_attr 
 {
@@ -20,6 +20,7 @@ struct tcp_attr
 	pthread_t thread;
 
 	int loop;
+	clock_t clocks;
 };
 
 struct tcp_recived 

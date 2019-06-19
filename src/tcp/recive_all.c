@@ -125,6 +125,7 @@ int tcp_recive_all(struct tcp_attr *params, struct tcp_recived *rs, int nfd)
 		params->service);
 
 	/* zapisanie sekwencji FCGI do pliku */
+	/*
 	FILE *rfd = fopen("_odp.bin", "wb+");
 	if(rfd == NULL)
 	{
@@ -134,6 +135,7 @@ int tcp_recive_all(struct tcp_attr *params, struct tcp_recived *rs, int nfd)
 	printf("\tZapisuję bufor do pliku...\n");
 	fwrite(rs->buffer, rs->buffer_data_len, 1, rfd);
 	fclose(rfd);
+	*/
 
 	return 0;
 }

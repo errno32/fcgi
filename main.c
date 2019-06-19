@@ -29,12 +29,16 @@ int fcgi_parse		(char *, int);	/* buffer, len */
 int fcgi_asemble_body	(struct fcgi_body *, int, char *);
 int fcgi_get_len	(char *, int *, int*);	/* buffer, length, position */
 
+int fcgi_send_test_page	(int);
+
 #include "source_files.h"
 
 int main(void)
 {
 	record rec; /* niezbędne dla funkcji REC() i REC_ERR() */
 	REC("Rozpoczęcie pracy programu.%c", 0);
+
+	printf("CLOCKS_PER_SEC: %ld\n", CLOCKS_PER_SEC);
 
 	open_tcp_socket(12345, 1);
 

@@ -14,3 +14,4 @@
 #include "src/fcgi/parse.c"
 #include "src/fcgi/asemble_body.c"
 #include "src/fcgi/get_len.c"
+#include "src/fcgi/send_test_page.c"
