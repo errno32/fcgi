@@ -1,17 +1,8 @@
-#include <sys/socket.h>	/* socket() */
-#include <netdb.h>	/* getprotobyname() */
-
 /* Funkcja    : tcp_socket()
- * Opis       : tworzy deskryptor gniazda TCP
- * Argumenty  : *params - wskaźnik na strukturę zawierającą wszystkie dane
- * Wynik      : 0 - success
- 		1 - błąd funkcji socket()
-
- * Func       :
- * Desc       :
- * Args       :
- * Return     :
- 	
+ * Opis       : Tworzy deskryptor gniazda TCP.
+ * Argumenty  : *params - wskaźnik na strukturę tcp_attr
+ * Wynik      : 0	- success
+ 		1	- błąd funkcji socket()
  */
 
 int tcp_socket(struct tcp_attr *params) 

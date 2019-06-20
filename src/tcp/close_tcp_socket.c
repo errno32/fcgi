@@ -1,5 +1,5 @@
-/* Funkcja    : close_tcp_server()
- * Opis       : zamyka serwer i czyści pamięć
+/* Funkcja    : close_tcp_socket()
+ * Opis       : Zamyka port i czyści strukturę tcp_attr.
  * Argumenty  : *params - wskaźnik na strukturę zawierającą wszystkie dane
  * Wynik      : 0 - sukces
  		1 - argument wskazuje na NULL

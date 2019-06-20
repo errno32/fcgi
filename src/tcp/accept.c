@@ -1,11 +1,9 @@
-#include <sys/socket.h>	/* accept() */
-
 /* Funkcja    : tcp_accept()
- * Opis       : obsługuje nadchodzące połączenia
- * Argumenty  : *params - wskaźnik na strukturę zawierającą wszystkie dane
- * Wynik      : 0 - sukces
- 		1 - błąd funkcji accept()
-		2 -
+ * Opis       : Obsługuje połączenia. Ignoruje obce IP.
+ * Argumenty  : *params - wskaźnik na strukturę tcp_attr
+ * Wynik      : 0	- sukces
+ 		1	- błąd alokacji pamięci pod strukturę tcp_recived
+		2	- błąd funkcji accept()
  */
 int tcp_accept(struct tcp_attr *params)
 {

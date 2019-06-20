@@ -1,13 +1,11 @@
-#include <sys/socket.h>
-
 #define LQUEUE 20	/* liczba połączeń oczekujących na accept() */
 
-/* Funkcja    : init_listen()
- * Opis       : kolejkuje nadchodzące połączenia przed wywołąniem systemowej
- 		funkcji accepr()
- * Argumenty  : *params - wskaźnik na strukturę zawierającą wszystkie dane
- * Wynik      : 0 - sukces
- 		1 - błąd funkcji listen()
+/* Funkcja    : tcp_listen()
+ * Opis       : Kolejkuje nadchodzące połączenia przed wywołąniem systemowej
+ 		funkcji accept().
+ * Argumenty  : *params	- wskaźnik na strukturę zawierającą wszystkie dane
+ * Wynik      : 0	- sukces
+ 		1	- błąd funkcji listen()
  */
 
 int tcp_listen(struct tcp_attr *params) 

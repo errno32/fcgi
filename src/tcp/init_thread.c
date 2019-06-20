@@ -1,10 +1,9 @@
-/* Funkcja    : init_thread()
- * Opis       : funkcja rozpoczynająca pracę nowego wątku (ID params->thread),
-		porządkująca działanie pozostałych funkcji z rodzinki (poza
-		create_ i close_ )
- * Argumenty  : *params - wskaźnik na strukturę zawierającą wszystkie dane
- * Wynik      : 0 - sukces
- 		1 - w funkcji init_socket, _bind lub _listen wystąpił błąd
+/* Funkcja    : tcp_thread()
+ * Opis       : Funkcja rozpoczyna pracę nowego wątku (ID: params->thread)
+ * 		i wykonuje procedurę otwarcia nowego gniazda TCP.
+ * Argumenty  : *params	- wskaźnik na strukturę tcp_sttr
+ * Wynik      : 0	- sukces
+		1	- w funkcji tcp_socket, _bind lub _listen wystąpił błąd
  */
 
 int tcp_thread(struct tcp_attr *params) 

@@ -1,3 +1,13 @@
+/* Funkcja    : tcp_recive_all()
+ * Opis       : Rezerwuje pamięć i odbiera dane od serwera.
+ * Argumenty  : tcp_attr *params
+ * 		tcp_recived *rs
+ * 		int nfd
+ * Wynik      : 0	- sukces
+ * 		1	- błąd realloc() pod zmienną rs->buffer
+ * 		2	- połączenie przerwane przez serwer
+ * 		3	- błąd recv() inny niż EAGAIN lub EWOULDBLOCK
+ */
 int tcp_recive_all(struct tcp_attr *params, struct tcp_recived *rs, int nfd) 
 {
 	record rec;

@@ -1,3 +1,12 @@
+/* Funkcja    : open_tcp_socket()
+ * Opis       : Alokuje w pamięci strukturę tcp_sttr i uruchamia procedurę
+ * 		w nowym wątku.
+ * Argumenty  : port	- unikatowy numer portu do wykorzystania
+ * 		sercive	- typ usługi / TODO przypisać im makra
+ * Wynik      : 0	- sukces
+ * 		1	- błąd funkcji malloc()
+ */
+
 int open_tcp_socket(int port, int service) 
 {
 	record rec;

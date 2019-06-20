@@ -4,6 +4,12 @@
 #include <time.h>
 #include <errno.h>
 #include <pthread.h>
+#include <sys/socket.h>	/* socket(), bind(), listen(), accept() */
+#include <netdb.h>	/* getprotobyname() */
+#include <arpa/inet.h>	/* struct sockaddr_in, inet_aton(), htons() */
+#include <unistd.h>	/* sleep(), usleep()*/
+
+
 
 #include "conf.h"
 

@@ -1,15 +1,9 @@
-#include <sys/socket.h>	/* bind() */
-#include <string.h>	/* memset() */
-#include <arpa/inet.h>	/* struct sockaddr_in, inet_aton(), htons() */
-#include <errno.h>	/* EADDRINUSE */
-#include <unistd.h>	/* sleep() */
-
 /* Funkcja    : init_bind()
- * Opis       : otwiera port dla gniazda; jeśli port jest zajęty, ponawia
- 		operację co BIND_SLEEPER sekund aż do skutku
- * Argumenty  : *params - wskaźnik na strukturę zawierającą wszystkie dane
- * Wynik      : 0 - sukces
- 		1 - błąd funkcji bind() -- inny niż EADDRINUSE
+ * Opis       : Otwiera port dla gniazda; jeśli port jest zajęty, ponawia
+ 		operację co BIND_SLEEPER sekund aż do skutku.
+ * Argumenty  : *params	- wskaźnik na strukturę tcp_attr
+ * Wynik      : 0	- sukces
+ 		1	- błąd funkcji bind() -- inny niż EADDRINUSE
  */
 
 int tcp_bind(struct tcp_attr *params) 
