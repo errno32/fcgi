@@ -29,7 +29,7 @@ int tcp_thread(struct tcp_attr *tcp)
 
 				while(tcp->loop) 
 				{	
-					tcp_accept(tcp);
+					tcp_coordinate(tcp);
 				}
 				
 				close_tcp_socket(tcp);

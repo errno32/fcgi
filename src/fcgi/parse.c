@@ -1,6 +1,9 @@
-int fcgi_parse(struct tcp_attr *tcp, char *buffer, int len) 
+int fcgi_parse(struct tcp_attr *tcp)
 {
 	record rec;
+
+	char *buffer = tcp->recived->buffer;
+	int len = tcp->recived->buffer_data_len;
 
 	struct fcgi_recv *recived = NULL;
 	recived = malloc(sizeof(struct fcgi_recv));

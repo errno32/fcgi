@@ -13,7 +13,7 @@ int tcp_recive_all(struct tcp_attr *tcp)
 {
 	record rec;
 
-	struct tcp_recived *rs = tcp->recived;
+	struct tcp_recived *rs = tcp->recived;	/* skrót */
 
 	int recived = 0;	/* tyle odebrano przy ostatnim recv() */
 

@@ -1,10 +1,11 @@
 /*
 int open_tcp_socket	(int, int);	/port, service/
-int tcp_thread	(struct tcp_attr *);
-int tcp_socket	(struct tcp_attr *);
-int tcp_bind	(struct tcp_attr *);
-int tcp_listen	(struct tcp_attr *);
-int tcp_accept	(struct tcp_attr *);
+int tcp_thread		(struct tcp_attr *);
+int tcp_socket		(struct tcp_attr *);
+int tcp_bind		(struct tcp_attr *);
+int tcp_liste	n	(struct tcp_attr *);
+int tcp_coordinate	(struct tcp_attr *);
+int tcp_accept		(struct tcp_attr *);
 int tcp_recive_all	(struct tcp_attr*, struct tcp_recived*, int)
 int close_tcp_socket(struct tcp_attr *);
 */

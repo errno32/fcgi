@@ -7,6 +7,7 @@
 #include "src/tcp/socket.c"
 #include "src/tcp/bind.c"
 #include "src/tcp/listen.c"
+#include "src/tcp/coordinate.c"
 #include "src/tcp/accept.c"
 #include "src/tcp/recive_all.c"
 #include "src/tcp/close_tcp_socket.c"

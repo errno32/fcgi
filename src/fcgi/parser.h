@@ -48,3 +48,21 @@ struct fcgi_recv
 	struct fcgi_body *params;
 	struct fcgi_body *input;
 };
+
+
+struct fcgi_rrecv
+{
+	char *buffer; /* zdublowana wartość */
+
+	char *params_buff;
+	int params_len;
+	char params_done;
+
+	char *input_buff;
+	int input_len;
+	char input_done;
+
+	char *data_buff;
+	int data_len;
+	char data_done;
+};

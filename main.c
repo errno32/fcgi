@@ -33,11 +33,12 @@ int tcp_thread		(struct tcp_attr *);
 int tcp_socket		(struct tcp_attr *);
 int tcp_bind		(struct tcp_attr *);
 int tcp_listen		(struct tcp_attr *);
-int tcp_accept		(struct tcp_attr *);	/* centrum dowodzenia */
+int tcp_coordinate	(struct tcp_attr *);	/* centrum dowodzenia */
+int tcp_accept		(struct tcp_attr *);
 int tcp_recive_all	(struct tcp_attr *);
 int close_tcp_socket	(struct tcp_attr *);
 
-int fcgi_parse		(struct tcp_attr *, char *, int);/* buffer, len */
+int fcgi_parse		(struct tcp_attr *);/* buffer, len */
 int fcgi_asemble_body	(struct fcgi_body *, int, char *);
 int fcgi_get_len	(char *, int *, int*);	/* buffer, length, position */
 
@@ -46,7 +47,7 @@ int fcgi_send_test_page	(int);
 #include "source_files.h"
 
 int main(void)
-{
+{	
 	record rec; /* niezbędne dla funkcji REC() i REC_ERR() */
 	REC("Rozpoczęcie pracy programu.%c", 0);
 
