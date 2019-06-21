@@ -2,34 +2,34 @@
 
 /* Funkcja    : tcp_listen()
  * Opis       : Kolejkuje nadchodzące połączenia przed wywołąniem systemowej
- 		funkcji accept().
- * Argumenty  : *params	- wskaźnik na strukturę zawierającą wszystkie dane
+ *		funkcji accept().
+ * Argumenty  : *tcp	- wskaźnik na strukturę zawierającą wszystkie dane
  * Wynik      : 0	- sukces
- 		1	- błąd funkcji listen()
+ *		1	- błąd funkcji listen()
  */
 
-int tcp_listen(struct tcp_attr *params) 
+int tcp_listen(struct tcp_attr *tcp) 
 {
 	record rec;
 
 	int result = 0;
-	result = listen(params->sfd, LQUEUE);
+	result = listen(tcp->sfd, LQUEUE);
 
 	if(result != 0) 
 	{
 		rec.error = errno;
 		REC_ERR(ERROR, rec.error, "Błąd wywołania listen()"
 			" w funkcji tcp_listen() / port=%d, service=%d",
-			params->service,
-			params->port);
+			tcp->service,
+			tcp->port);
 
 		return 1;
 	}
 
 	/*
 	REC("listen() wykonany pomyślnie / port=%d, service=%d",
-		params->port,
-		params->service);
+		tcp->port,
+		tcp->service);
 	*/
 
 	return 0;

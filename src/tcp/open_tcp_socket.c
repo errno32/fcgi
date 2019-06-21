@@ -11,10 +11,10 @@ int open_tcp_socket(int port, int service)
 {
 	record rec;
 
-	struct tcp_attr *params = NULL;
-	params = malloc(sizeof(struct tcp_attr));
+	struct tcp_attr *tcp = NULL;
+	tcp = malloc(sizeof(struct tcp_attr));
 
-	if(params == NULL) 
+	if(tcp == NULL) 
 	{
 		rec.error = errno;
 		REC_ERR(FUCK, rec.error,
@@ -25,17 +25,18 @@ int open_tcp_socket(int port, int service)
 		return 1;
 	}
 
-	params->sfd	= -1;
-	params->port	= port;
-	params->service	= service;
-	params->thread	= 0;
-	params->loop	= 0;
+	tcp->sfd	= -1;
+	tcp->port	= port;
+	tcp->service	= service;
+	tcp->thread	= 0;
+	tcp->loop	= 0;
+	tcp->recived	= NULL;
 
 	pthread_create(
-		&(params->thread),
+		&(tcp->thread),
 		NULL,
-		(void *) tcp_thread, /* tcp_thread(params) */
-		(void *) params);
+		(void *) tcp_thread, /* tcp_thread(tcp) */
+		(void *) tcp);
 
 	return 0;
 }

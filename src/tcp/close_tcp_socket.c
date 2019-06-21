@@ -1,35 +1,35 @@
 /* Funkcja    : close_tcp_socket()
  * Opis       : Zamyka port i czyści strukturę tcp_attr.
- * Argumenty  : *params - wskaźnik na strukturę zawierającą wszystkie dane
+ * Argumenty  : *tcp - wskaźnik na strukturę zawierającą wszystkie dane
  * Wynik      : 0 - sukces
- 		1 - argument wskazuje na NULL
+ *		1 - argument wskazuje na NULL
  */
 
-int close_tcp_socket(struct tcp_attr *params) 
+int close_tcp_socket(struct tcp_attr *tcp) 
 {
 	record rec; 
 
-	if(params == NULL) 
+	if(tcp == NULL) 
 	{
 		REC_ERR(ERROR, 0, "close_tcp_socket() wywołane dla NULL"
 			" / port=%d, service=%d",
-			params->port,
-			params->service);
+			tcp->port,
+			tcp->service);
 		
 		return 1;
 	}
 
 	/* zamknięcie gniazda siecioego */
-	if(params->sfd != -1) close(params->sfd);
+	if(tcp->sfd != -1) close(tcp->sfd);
 
 	/* oczekiwanie na zakończenie wątku */
-	if(params->thread != 0) pthread_join(params->thread, NULL);
+	if(tcp->thread != 0) pthread_join(tcp->thread, NULL);
 
 	/* zapisuję, żeby po zwolnieniu pamięci wyświetlić pełny komunikat */
-	int info_service = params->service, info_port = params->port;
+	int info_service = tcp->service, info_port = tcp->port;
 	
-	free(params);
-	params = NULL;
+	free(tcp);
+	tcp = NULL;
 
 	REC("Zamknięto gniazdo TCP / port=%d, service=%d",
 		info_port, info_service);

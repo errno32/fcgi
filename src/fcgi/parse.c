@@ -1,14 +1,18 @@
-int fcgi_parse(char *buffer, int len) 
+int fcgi_parse(struct tcp_attr *tcp, char *buffer, int len) 
 {
-	printf("funkcja fcgi_parse(char *buffer, int len == %d)\n", len);
+	record rec;
 
 	struct fcgi_recv *recived = NULL;
 	recived = malloc(sizeof(struct fcgi_recv));
 
 	if(recived == NULL) 
 	{
-		printf("problem z alokacjiom\n");
-		return 3;
+		rec.error = errno;
+		REC_ERR(ERROR, rec.error, "błąd malloc() dla struct fcgi_recv"
+			" / port=%d, service=%d",
+			tcp->port,
+			tcp->service);
+		return 1;
 	}
 
 	recived->buffer	= buffer;
@@ -101,7 +105,7 @@ int fcgi_parse(char *buffer, int len)
 		position += header.len + header.padding + FCGI_HEADER_LEN;
 	}
 
-	/* wyświetlenie paramsow */
+	/* wyświetlenie tcpow */
 	int pos = 0, len1, len2;
 
 	while(pos < recived->params->len) 

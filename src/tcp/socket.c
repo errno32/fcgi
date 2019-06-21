@@ -1,11 +1,11 @@
 /* Funkcja    : tcp_socket()
  * Opis       : Tworzy deskryptor gniazda TCP.
- * Argumenty  : *params - wskaźnik na strukturę tcp_attr
+ * Argumenty  : *tcp - wskaźnik na strukturę tcp_attr
  * Wynik      : 0	- success
- 		1	- błąd funkcji socket()
+ * 		1	- błąd funkcji socket()
  */
 
-int tcp_socket(struct tcp_attr *params) 
+int tcp_socket(struct tcp_attr *tcp) 
 {
 	record rec;
 	int protocol = 0;
@@ -19,21 +19,21 @@ int tcp_socket(struct tcp_attr *params)
 	}
 	else protocol = proto_struct->p_proto;
 
-	params->sfd = socket(AF_INET, SOCK_STREAM, protocol);
+	tcp->sfd = socket(AF_INET, SOCK_STREAM, protocol);
 
-	if(params->sfd == -1) 
+	if(tcp->sfd == -1) 
 	{	
 		rec.error = errno;
 		REC_ERR(ERROR, rec.error, "Nie udało się utworzyć gniazda"
 			" funkcją tcp_socket() / port=%d, service=%d",
-			params->port, params->service);
+			tcp->port, tcp->service);
 		return 1;
 	}
 
 	/*
 	REC("socket() wykonany pomyślnie / port=%d, service=%d",
-		params->port,
-		params->service);
+		tcp->port,
+		tcp->service);
 	*/
 
 	return 0;

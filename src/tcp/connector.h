@@ -18,13 +18,14 @@ struct tcp_attr
 	int port;
 	int service;	/* zrobić makra */
 	pthread_t thread;
-
 	int loop;
+	struct tcp_recived *recived;
 	clock_t clocks;
 };
 
 struct tcp_recived 
 {
+	int nfd;
 	char *buffer;
 	int buffer_len;
 	int buffer_data_len;

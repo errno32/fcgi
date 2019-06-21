@@ -1,38 +1,38 @@
 /* Funkcja    : tcp_thread()
- * Opis       : Funkcja rozpoczyna pracę nowego wątku (ID: params->thread)
+ * Opis       : Funkcja rozpoczyna pracę nowego wątku (ID: tcp->thread)
  * 		i wykonuje procedurę otwarcia nowego gniazda TCP.
- * Argumenty  : *params	- wskaźnik na strukturę tcp_sttr
+ * Argumenty  : *tcp	- wskaźnik na strukturę tcp_sttr
  * Wynik      : 0	- sukces
-		1	- w funkcji tcp_socket, _bind lub _listen wystąpił błąd
+ *		1	- w funkcji tcp_socket, _bind lub _listen wystąpił błąd
  */
 
-int tcp_thread(struct tcp_attr *params) 
+int tcp_thread(struct tcp_attr *tcp) 
 {
 	record rec;
 	int res_bind, res_listen;
 
-	tcp_socket(params);
-	if(params->sfd != -1) 
+	tcp_socket(tcp);
+	if(tcp->sfd != -1) 
 	{
-		res_bind = tcp_bind(params);
+		res_bind = tcp_bind(tcp);
 		if(res_bind == 0) 
 		{
-			res_listen = tcp_listen(params);
+			res_listen = tcp_listen(tcp);
 			if(res_listen == 0) 
 			{
 				REC("\033[32mGniazdo otwarte pomyślnie!\033[0m"
 					" / port=%d, service=%d",
-					params->port,
-					params->service);
+					tcp->port,
+					tcp->service);
 
-				params->loop = 1;
+				tcp->loop = 1;
 
-				while(params->loop) 
+				while(tcp->loop) 
 				{	
-					tcp_accept(params);
+					tcp_accept(tcp);
 				}
 				
-				close_tcp_socket(params);
+				close_tcp_socket(tcp);
 				return 0;
 			}
 		}
@@ -40,9 +40,9 @@ int tcp_thread(struct tcp_attr *params)
 
 	REC_ERR(FUCK, 0, "Nie udało się stworzyć gniazda TCP!"
 		" / port=%d, service=%d",
-		params->port,
-		params->service);
+		tcp->port,
+		tcp->service);
 
-	close_tcp_socket(params);
+	close_tcp_socket(tcp);
 	return 1;
 }

@@ -4,18 +4,24 @@
 #include <time.h>
 #include <errno.h>
 #include <pthread.h>
+#include <unistd.h>	/* sleep(), usleep()*/
 #include <sys/socket.h>	/* socket(), bind(), listen(), accept() */
 #include <netdb.h>	/* getprotobyname() */
 #include <arpa/inet.h>	/* struct sockaddr_in, inet_aton(), htons() */
-#include <unistd.h>	/* sleep(), usleep()*/
-
-
 
 #include "conf.h"
 
 #include "src/rec/recorder.h"
 #include "src/tcp/connector.h"
 #include "src/fcgi/parser.h"
+
+struct request 
+{
+	struct tcp_attr  *tcp;
+	struct fcgi_recv *recived;
+	
+};
+
 
 int rec_get_date	(char *);
 int rec_get_type	(int, char *);
@@ -27,11 +33,11 @@ int tcp_thread		(struct tcp_attr *);
 int tcp_socket		(struct tcp_attr *);
 int tcp_bind		(struct tcp_attr *);
 int tcp_listen		(struct tcp_attr *);
-int tcp_accept		(struct tcp_attr *);
-int tcp_recive_all	(struct tcp_attr *, struct tcp_recived *, int);
+int tcp_accept		(struct tcp_attr *);	/* centrum dowodzenia */
+int tcp_recive_all	(struct tcp_attr *);
 int close_tcp_socket	(struct tcp_attr *);
 
-int fcgi_parse		(char *, int);	/* buffer, len */
+int fcgi_parse		(struct tcp_attr *, char *, int);/* buffer, len */
 int fcgi_asemble_body	(struct fcgi_body *, int, char *);
 int fcgi_get_len	(char *, int *, int*);	/* buffer, length, position */
 

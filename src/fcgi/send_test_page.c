@@ -1,5 +1,3 @@
-#include <string.h>
-
 int fcgi_send_test_page(int sfd) 
 {
 	printf("funkcja fcgi_send_test_page()... ");

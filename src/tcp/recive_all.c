@@ -1,6 +1,6 @@
 /* Funkcja    : tcp_recive_all()
  * Opis       : Rezerwuje pamięć i odbiera dane od serwera.
- * Argumenty  : tcp_attr *params
+ * Argumenty  : tcp_attr *tcp
  * 		tcp_recived *rs
  * 		int nfd
  * Wynik      : 0	- sukces
@@ -8,15 +8,18 @@
  * 		2	- połączenie przerwane przez serwer
  * 		3	- błąd recv() inny niż EAGAIN lub EWOULDBLOCK
  */
-int tcp_recive_all(struct tcp_attr *params, struct tcp_recived *rs, int nfd) 
+
+int tcp_recive_all(struct tcp_attr *tcp) 
 {
 	record rec;
+
+	struct tcp_recived *rs = tcp->recived;
 
 	int recived = 0;	/* tyle odebrano przy ostatnim recv() */
 
 	int allocating = 1;	/* czy alokować dodatkową pamięć? */
 	int repeating = 1;	/* czy wykonywać dalej pętlę? */
-	int waited = 0;		/* czy wykonało już jedno spanko? */ 
+	int waited = 0;		/* czy wykonało już spanko? */ 
 
 	char *buffer_before;
 
@@ -32,8 +35,8 @@ int tcp_recive_all(struct tcp_attr *params, struct tcp_recived *rs, int nfd)
 				rec.error = errno;
 				REC_ERR(ERROR, rec.error, "realloc() wewnątrz"
 					" tc_z_ufer() / port=%d, service=%d",
-					params->port,
-					params->service);
+					tcp->port,
+					tcp->service);
 
 				if(buffer_before != NULL) free(buffer_before);
 
@@ -41,7 +44,8 @@ int tcp_recive_all(struct tcp_attr *params, struct tcp_recived *rs, int nfd)
 			}
 		}
 
-		recived = recv(nfd, &(rs->buffer)[rs->buffer_len - P_SIZE],
+		recived = recv(rs->nfd,
+			&(rs->buffer)[rs->buffer_len - P_SIZE],
 			P_SIZE, MSG_DONTWAIT);
 
 		if(recived == P_SIZE) 
@@ -58,8 +62,8 @@ int tcp_recive_all(struct tcp_attr *params, struct tcp_recived *rs, int nfd)
 		{
 			REC_ERR(ERROR, rec.error, "Połączenie przerwane przez"
 				" serwer / port=%d, service=%d",
-				params->port,
-				params->service);
+				tcp->port,
+				tcp->service);
 
 			if(rs->buffer != NULL) 
 			{
@@ -88,8 +92,8 @@ int tcp_recive_all(struct tcp_attr *params, struct tcp_recived *rs, int nfd)
 					"Ponawiam odbiór za %d mikrosekund"
 					" / port=%d, service=%d",
 					NONBLOCK_WAITER,
-					params->port,
-					params->service);
+					tcp->port,
+					tcp->service);
 
 					usleep(NONBLOCK_WAITER);
 
@@ -105,8 +109,8 @@ int tcp_recive_all(struct tcp_attr *params, struct tcp_recived *rs, int nfd)
 				/* niespodziewnay błąd */
 				REC_ERR(ERROR, rec.error, "recv()"
 					" / port=%d, service=%d",
-					params->port,
-					params->service);
+					tcp->port,
+					tcp->service);
 
 				if(rs->buffer != NULL) 
 				{
@@ -131,8 +135,8 @@ int tcp_recive_all(struct tcp_attr *params, struct tcp_recived *rs, int nfd)
 		" / p=%d, s=%d",
 		rs->buffer_data_len,
 		rs->buffer_len,
-		params->port,
-		params->service);
+		tcp->port,
+		tcp->service);
 
 	/* zapisanie sekwencji FCGI do pliku */
 	/*
